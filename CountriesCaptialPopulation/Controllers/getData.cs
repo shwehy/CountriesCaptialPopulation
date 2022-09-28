@@ -2,6 +2,7 @@
 using CountriesCaptialPopulation.Model;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace CountriesCaptialPopulation.Controllers
@@ -19,8 +20,8 @@ namespace CountriesCaptialPopulation.Controllers
             var client = new RestClient(url);
             var request = new RestRequest(url, Method.Get);
             RestResponse response = await client.ExecuteAsync(request);
-            var result = JsonConvert.DeserializeObject<List<Country>>(response.Content);
-            for (int i  = 0; i < result.Count; i++)
+            var result = JsonConvert.DeserializeObject<JToken>(response.Content);
+            /*for (int i  = 0; i < result.Count; i++)
             {
                 if (_context.Entry(result[i]).State == EntityState.Modified)
                 {
@@ -29,20 +30,23 @@ namespace CountriesCaptialPopulation.Controllers
                 }
 
 
-            }
-            
+            }*/
+            Country country = new Country();
+             country.Name = result["country"].ToString();
 
-            var country = new Country();
-            country.CountryID = 1;
-            country.Code = "4";
-            country.Name = "temp";
+
+           /* var country = new Country();
+            country.CountryID = 1;*/
+            country.Code = result["code"].ToString(); 
             var pop = new PopulationList();
             pop.ID = 1;
-            pop.year = 2020;
-            pop.country = country;
-            pop.value = 100202;
+            pop.year = int.Parse(result["year"].ToString());
 
-            country.Populations.Add(pop);
+            pop.country = country;
+            pop.value = int.Parse(result["value"].ToString()); ;
+
+            /*            country.Populations.Add(pop);
+            */
             await _context.countries.AddAsync(country);
             await _context.SaveChangesAsync();
         }
