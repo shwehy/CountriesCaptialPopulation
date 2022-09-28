@@ -7,6 +7,7 @@ namespace CountriesCaptialPopulation.Data
 {
     public class CountryDbContext:DbContext
     {
+
         public CountryDbContext(DbContextOptions<CountryDbContext> options) : base(options)
         {
 
