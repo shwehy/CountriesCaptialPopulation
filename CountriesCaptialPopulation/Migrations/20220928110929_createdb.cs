@@ -12,45 +12,47 @@ namespace CountriesCaptialPopulation.Migrations
                 name: "countries",
                 columns: table => new
                 {
-                    Code = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CountryID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_countries", x => x.Code);
+                    table.PrimaryKey("PK_countries", x => x.CountryID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PopulationList",
+                name: "populationLists",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     year = table.Column<int>(type: "int", nullable: false),
                     value = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    countryCode = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CountryID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PopulationList", x => x.ID);
+                    table.PrimaryKey("PK_populationLists", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_PopulationList_countries_countryCode",
-                        column: x => x.countryCode,
+                        name: "FK_populationLists_countries_CountryID",
+                        column: x => x.CountryID,
                         principalTable: "countries",
-                        principalColumn: "Code");
+                        principalColumn: "CountryID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PopulationList_countryCode",
-                table: "PopulationList",
-                column: "countryCode");
+                name: "IX_populationLists_CountryID",
+                table: "populationLists",
+                column: "CountryID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PopulationList");
+                name: "populationLists");
 
             migrationBuilder.DropTable(
                 name: "countries");

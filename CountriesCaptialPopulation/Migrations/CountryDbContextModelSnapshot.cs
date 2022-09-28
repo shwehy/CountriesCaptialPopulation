@@ -23,14 +23,21 @@ namespace CountriesCaptialPopulation.Migrations
 
             modelBuilder.Entity("CountriesCaptialPopulation.Model.Country", b =>
                 {
+                    b.Property<int>("CountryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CountryID"), 1L, 1);
+
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Code");
+                    b.HasKey("CountryID");
 
                     b.ToTable("countries");
                 });
@@ -43,12 +50,8 @@ namespace CountriesCaptialPopulation.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("countryCode")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CountryID")
+                        .HasColumnType("int");
 
                     b.Property<int>("value")
                         .HasColumnType("int");
@@ -58,16 +61,18 @@ namespace CountriesCaptialPopulation.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("countryCode");
+                    b.HasIndex("CountryID");
 
-                    b.ToTable("PopulationList");
+                    b.ToTable("populationLists");
                 });
 
             modelBuilder.Entity("CountriesCaptialPopulation.Model.PopulationList", b =>
                 {
                     b.HasOne("CountriesCaptialPopulation.Model.Country", "country")
                         .WithMany("Populations")
-                        .HasForeignKey("countryCode");
+                        .HasForeignKey("CountryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("country");
                 });
