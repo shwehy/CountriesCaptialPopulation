@@ -33,9 +33,9 @@ namespace CountriesCaptialPopulation.Controllers
              RestResponse response = await client.ExecuteAsync(request);*/
             /*var Output = response.Content;*/
 
-            /*            getData update = new getData(_context);
+            getData update = new getData(_context);
 
-                        update.save_Change();*/
+            update.save_Change();
 
             /*return await _context.countries.ToListAsync();*/
             return await _context.countries.Skip((pageno - 1) * 50).Take(50).ToListAsync();
