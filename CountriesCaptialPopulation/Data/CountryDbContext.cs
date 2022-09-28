@@ -1,5 +1,6 @@
 ﻿using CountriesCaptialPopulation.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 
 namespace CountriesCaptialPopulation.Data
@@ -10,6 +11,8 @@ namespace CountriesCaptialPopulation.Data
         {
 
         }
+
         public DbSet<Country> countries { get; set; }
+        public DbSet<PopulationList> populationLists { get; set; }
     }
 }
